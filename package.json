@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^8.2.4",
+    "mysql2": "^3.2.0"
+  },
+  "scripts": {
+    "start": "node server.js"
+  },
+  "name": "command-line-application",
+  "description": "",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/123sites/Command-Line-Application.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/123sites/Command-Line-Application/issues"
+  },
+  "homepage": "https://github.com/123sites/Command-Line-Application#readme"
+}
