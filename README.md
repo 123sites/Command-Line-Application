@@ -1,6 +1,5 @@
 # ⭐ Command Line Application ⭐
-
-![License Badge](https://img.shields.io/github/license-MIT-yellow.svg)/123sites/Command-Line-Application) ![Top Language](https://img.shields.io/github/languages/top/123sites/Command-Line-Application)
+![License Badge](https://img.shields.io/github/license/123sites/Command-Line-Application) ![Top Language](https://img.shields.io/github/languages/top/123sites/Command-Line-Application)
 
 ## Description ✏️
 
@@ -43,8 +42,10 @@ So far, I have the `Pull Shark` and `Yolo` badges on GitHub.  Click to view them
 
 ## Features ✍
 
-- npm
-- MySQL
-- Heroku
 - Node.js
 - JavaScript
+- npm packages
+  * Inquirer
+  * Figlet
+  * Chalk
+  * MySQL
