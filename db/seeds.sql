@@ -21,7 +21,7 @@ VALUES
     ("Salesperson", 60000, 1),
     -- engineers & designer
     ("Lead Engineer", 150000, 2),
-    ("Backend Engineer", 125000, 2),
+    ("Back-End Engineer", 125000, 2),
     ("Front-End Designer", 125000, 2),
     -- Ad, acct, & legal
     ("Advertisement & PR", 80000, 3),
@@ -44,4 +44,4 @@ VALUES
     -- Ad, acct, & legal
     ("Rick", "Rocha", 6, NULL),
     ("Simone", "Sequiera", 7, NULL),
-    ("Daniel", "Cohen", 8, NULL);
+    ("Daniel", "Chen", 8, NULL);
