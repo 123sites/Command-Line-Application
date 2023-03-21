@@ -7,8 +7,6 @@
 // First Query, get the client, connects to db to perform queries
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-// node.js querystring help: https://nodejs.org/api/querystring.html
-const querystring = require("node:querystring");
 
 // npm figlet help: https://www.npmjs.com/package/figlet
 const figlet = require("figlet");
@@ -22,7 +20,7 @@ figlet.text(
     font: "Ghost",
     horizontalLayout: "default",
     verticalLayout: "fitted",
-    width: 80,
+    width: 90,
     whitespaceBreak: true,
   },
   function (err, data) {
@@ -42,36 +40,37 @@ require("dotenv").config();
 // npm package "Chalk", terminal string styling:
 //  https://www.npmjs.com/package/chalk
 
-const chalk = require("chalk");
+// const chalk = require("chalk");
+// import chalk from 'chalk';
 
 // create the connection to database
 const connection = mysql.createConnection({
   host: "localhost",
-  // port: 3001,???????????????????????????????????????????????????????????????????????????????????????????????????????????????
+  port: 3306,
   user: "root",
-  database: "employee_db",
+  database: "employee_management_db",
   password: process.env.DB_PASSWORD,
 });
 
-// connection.connect();
-console.log(
-  chalk.yellow.bold(
-    "///////////////////////////////////////////////////////////////////////////////////////////////"
-  )
-);
-console.log(``);
-console.log(chalk.red.bold(figlet.textSync("EMPLOYEE TRACKER")));
-console.log(``);
-console.log(
-  `                               ` +
-    chalk.blue.bold("CONTENT MANAGEMENT SYSTEM")
-);
-console.log(``);
-console.log(
-  chalk.yellow.bold(
-    `///////////////////////////////////////////////////////////////////////////////////////////////`
-  )
-);
+// // connection.connect();
+// console.log(
+//   chalk.yellow.bold(
+//     "///////////////////////////////////////////////////////////////////////////////////////////////"
+//   )
+// );
+// console.log(``);
+// console.log(chalk.red.bold(figlet.textSync("EMPLOYEE TRACKER")));
+// console.log(``);
+// console.log(
+//   `                               ` +
+//     chalk.blue.bold("CONTENT MANAGEMENT SYSTEM")
+// );
+// console.log(``);
+// console.log(
+//   chalk.yellow.bold(
+//     `///////////////////////////////////////////////////////////////////////////////////////////////`
+//   )
+// );
 
 // Functions:
 
@@ -161,32 +160,32 @@ function viewRoles() {
 
 // // 4. View all employees, table showing emp data, emp ids, 1st names, last, job titles, depts, salaries, & mngs emplys rep to.
 // // function to Add a role; prompt role, salary and department
-// function viewEmp() {
-//   connection.query("SELECT * FROM employee", (err, data) => {
-//     if (err) throw err;
-//     console.log("Displaying all employees:");
-//     console.table(data);
-//     start();
-//   });
-// }
+function viewEmp() {
+  connection.query("SELECT * FROM employee", (err, data) => {
+    if (err) throw err;
+    console.log("Displaying all employees:");
+    console.table(data);
+    start();
+  });
+}
 
 // // 5. Choose to add a department: Prompted to enter name of dept & that department is added to db.
 // function addDept() { }
 // // 6. Choose to add a role:
-// // Prompted to enter name, salary, & dept for the role & that role is added to the db.
-// function addRole() {
-//   const sql = "SELECT * FROM department";
-//   connection.query(sql, (err, results) => {
-//     if (err) throw err;
-//   }}
+// Prompted to enter name, salary, & dept for the role & that role is added to the db.
+function addRole() {
+  const sql = "SELECT * FROM department";
+  connection.query(sql, (err, results) => {
+    if (err) throw err;
+  })}
 
 // // 7. Choose to add an employee: Prompted to enter employee’s 1st name, last, role, & mngr, & employee is added to db.
 // // function to add an employee
-// function addEmp() {
-//   const sql = "SELECT * FROM employee, role";
-//   connection.query(sql, (err, results) => {
-//     if (err) throw err;
-//   }}
+function addEmp() {
+  const sql = "SELECT * FROM employee, role";
+  connection.query(sql, (err, results) => {
+    if (err) throw err;
+  })}
 
 // // 8. Choose to update an employee role: Prompted to select an emp to update & their new role & this info is updated in db.
 // // function to Update employee role
@@ -227,10 +226,10 @@ function viewRoles() {
 
 
 
-// connection.connect(err => {
-// if(err) throw err;
-// start();
-// });
+connection.connect(err => {
+if(err) throw err;
+start();
+});
 
 // simple query
 // Query is a request for information.

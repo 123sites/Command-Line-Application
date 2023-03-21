@@ -8,7 +8,7 @@ VALUES
     -- engineers & designer
     ("Development"),
     -- Ad, acct, & legal
-    ("Advertisement & Public Relations")
+    ("Advertisement & PR"),
     ("Finance"),
     ("Legal");
 
@@ -24,9 +24,9 @@ VALUES
     ("Backend Engineer", 125000, 2),
     ("Front-End Designer", 125000, 2),
     -- Ad, acct, & legal
-    ("Advertisement & Public Relations", 80000, 3),
+    ("Advertisement & PR", 80000, 3),
     ("Accountant", 125000, 4),
-    ("Legal Advisor", 150000, 5),
+    ("Legal Advisor", 150000, 5);
 
 -- employee
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
@@ -43,5 +43,5 @@ VALUES
     ("Mica", "Miranda", 5, 3),
     -- Ad, acct, & legal
     ("Rick", "Rocha", 6, NULL),
-    ("Simone", "Sequiera", 7, NULL);
-    ("Daniel", "Cohen", 8, NULL)
+    ("Simone", "Sequiera", 7, NULL),
+    ("Daniel", "Cohen", 8, NULL);
