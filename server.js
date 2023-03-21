@@ -14,24 +14,24 @@ const figlet = require("figlet");
 // Figlet through npm (I installed it via Terminal to use it.)
 // This project aims to fully implement the FIGfont spec in JavaScript.
 //It works in the browser and with Node.js.
-figlet.text(
-  "Employee \n \n Manager",
-  {
-    font: "Ghost",
-    horizontalLayout: "default",
-    verticalLayout: "fitted",
-    width: 90,
-    whitespaceBreak: true,
-  },
-  function (err, data) {
-    if (err) {
-      console.log("Something went wrong...");
-      console.dir(err);
-      return;
-    }
-    console.log(data);
-  }
-);
+// figlet.text(
+//   "Employee \n \n Tracker",
+//   {
+//     font: "Ghost",
+//     horizontalLayout: "default",
+//     verticalLayout: "fitted",
+//     width: 90,
+//     whitespaceBreak: true,
+//   },
+//   function (err, data) {
+//     if (err) {
+//       console.log("Something went wrong...");
+//       console.dir(err);
+//       return;
+//     }
+//     console.log(data);
+//   }
+// );
 
 // call once somewhere in the beginning of the app.
 // Prints MySQL rows to the console.
@@ -40,7 +40,7 @@ require("dotenv").config();
 // npm package "Chalk", terminal string styling:
 //  https://www.npmjs.com/package/chalk
 
-// const chalk = require("chalk");
+const chalk = require("chalk");
 // import chalk from 'chalk';
 
 // create the connection to database
@@ -52,25 +52,24 @@ const connection = mysql.createConnection({
   password: process.env.DB_PASSWORD,
 });
 
-// // connection.connect();
-// console.log(
-//   chalk.yellow.bold(
-//     "///////////////////////////////////////////////////////////////////////////////////////////////"
-//   )
-// );
-// console.log(``);
-// console.log(chalk.red.bold(figlet.textSync("EMPLOYEE TRACKER")));
-// console.log(``);
-// console.log(
-//   `                               ` +
-//     chalk.blue.bold("CONTENT MANAGEMENT SYSTEM")
-// );
-// console.log(``);
-// console.log(
-//   chalk.yellow.bold(
-//     `///////////////////////////////////////////////////////////////////////////////////////////////`
-//   )
-// );
+// connection.connect();
+console.log(
+  chalk.yellow.bold(
+    "///////////////////////////////////////////////////////////////////////////////////////////////"
+  )
+);
+console.log(``);
+console.log(chalk.red.bold(figlet.textSync("EMPLOYEE TRACKER")));;
+console.log(
+  `                               ` +
+    chalk.white.bold("A COMMAND LINE APPLICATION")
+);
+console.log(``);
+console.log(
+  chalk.yellow.bold(
+    `///////////////////////////////////////////////////////////////////////////////////////////////`
+  )
+);
 
 // Functions:
 
