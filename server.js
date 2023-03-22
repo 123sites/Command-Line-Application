@@ -430,6 +430,10 @@ function update() {
       });
   });
 }
+connection.connect((err) => {
+  if (err) throw err;
+  start();
+});
 
 // BONUS: 1 - Update emps
 // BONUS: 2 - View employees by mngr
@@ -457,10 +461,9 @@ function update() {
 //       });
 //   };
 
-connection.connect((err) => {
-  if (err) throw err;
-  start();
-});
+
+
+
 
 // simple query
 // Query is a request for information from the db.
