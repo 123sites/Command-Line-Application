@@ -372,8 +372,10 @@ function update() {
           type: "list",
           choices: () => {
             let choiceArray = [];
+            console.log(`Line 375: ${choiceArray})`)
             for (let i = 0; i < results.length; i++) {
               choiceArray.push(results[i].last_name);
+              console.log("employee choice")
             }
             // Removes duplicates
             // let cleanChoiceArray = [...new Set(choiceArray)];
