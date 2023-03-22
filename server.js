@@ -324,8 +324,9 @@ function addEmp() {
             // the input passed to it before it is inserted into the query.
             // Data layer protection: https://www.stackhawk.com/blog/node-js-sql-injection-guide-examples-and-prevention/
             // How to delete duplicates in JS: https://www.geeksforgeeks.org/how-to-get-all-unique-values-remove-duplicates-in-a-javascript-array/
-            let cleanChoiceArray = [...new Set(choiceArray)];
-            return cleanChoiceArray;
+            // let cleanChoiceArray = [...new Set(choiceArray)];
+            // return cleanChoiceArray;
+            return choiceArray;
           },
           message: "What is the role?",
         },
@@ -375,8 +376,9 @@ function update() {
               choiceArray.push(results[i].last_name);
             }
             // Removes duplicates
-            let cleanChoiceArray = [...new Set(choiceArray)];
-            return cleanChoiceArray;
+            // let cleanChoiceArray = [...new Set(choiceArray)];
+            // return cleanChoiceArray;
+            return choiceArray;
           },
           message: "Which employee would you like to update?",
         },
@@ -388,9 +390,12 @@ function update() {
             for (let i = 0; i < results.length; i++) {
               choiceArray.push(results[i].title);
             }
-            // Removes duplicates
-            let cleanChoiceArray = [...new Set(choiceArray)];
-            return cleanChoiceArray;
+            // // Removes duplicates
+            // console.log(choiceArray)
+            // let cleanChoiceArray = [...new Set(choiceArray)];
+            // console.log(cleanChoiceArray)
+            // return cleanChoiceArray;
+            return choiceArray;
           },
           message: "What is the employee's new role?",
         },
