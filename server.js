@@ -362,7 +362,7 @@ function addEmp() {
 // FINISH THE BELOW ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 8. Choose to update an employee role: Function to Update employee role & info is updated in db.
 function update() {
-  connection.query("SELECT * FROM employee", (err, results) => {
+  connection.query("SELECT * FROM employee, role", (err, results) => {
     if (err) throw err;
 
     inquirer
@@ -372,10 +372,8 @@ function update() {
           type: "list",
           choices: () => {
             let choiceArray = [];
-            console.log(`Line 375: ${choiceArray})`)
             for (let i = 0; i < results.length; i++) {
               choiceArray.push(results[i].last_name);
-              console.log("employee choice")
             }
             // Removes duplicates
             // let cleanChoiceArray = [...new Set(choiceArray)];
@@ -393,7 +391,7 @@ function update() {
               choiceArray.push(results[i].title);
             }
             // // Removes duplicates
-            // console.log(choiceArray)
+            console.log(choiceArray)
             // let cleanChoiceArray = [...new Set(choiceArray)];
             // console.log(cleanChoiceArray)
             // return cleanChoiceArray;
