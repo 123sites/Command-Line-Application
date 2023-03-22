@@ -93,6 +93,7 @@ function start() {
         "Add a role",
         "Add an employee",
         "Update employee role",
+        "Delete an employee",
         "Exit",
       ],
 
@@ -127,6 +128,10 @@ function start() {
 
         case "Update employee role":
           update();
+          break;
+
+        case "Delete an employee":
+          removeEmployee();
           break;
 
         case "Exit":
@@ -320,7 +325,7 @@ function addEmp() {
             // Removes duplicates
             // www.w3schools.com/sql/sql_ref_set.asp#:~:text=The%20SET%20command%20is%20used,be%20updated%20in%20a%20table.
             // The SET command is used with UPDATE to specify which columns and values that should be updated in a table.
-            // The ? in SQL: These placeholders, indicated here with the ? symbol, tell the interfacing layer to automatically escape 
+            // The ? in SQL: These placeholders, indicated here with the ? symbol, tell the interfacing layer to automatically escape
             // the input passed to it before it is inserted into the query.
             // Data layer protection: https://www.stackhawk.com/blog/node-js-sql-injection-guide-examples-and-prevention/
             // How to delete duplicates in JS: https://www.geeksforgeeks.org/how-to-get-all-unique-values-remove-duplicates-in-a-javascript-array/
@@ -362,83 +367,73 @@ function addEmp() {
 // FINISH THE BELOW ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 8. Choose to update an employee role: Function to Update employee role & info is updated in db.
 function update() {
-  connection.query("SELECT * FROM employee, role", (err, results) => {
-    if (err) throw err;
-
-    inquirer
-      .prompt([
-        {
-          name: "employee",
-          type: "list",
-          choices: () => {
-            let choiceArray = [];
-            for (let i = 0; i < results.length; i++) {
-              choiceArray.push(results[i].last_name);
-            }
-            // Removes duplicates
-            // let cleanChoiceArray = [...new Set(choiceArray)];
-            // return cleanChoiceArray;
-            return choiceArray;
-          },
-          message: "Which employee would you like to update?",
-        },
-        {
-          name: "role",
-          type: "list",
-          choices: () => {
-            let choiceArray = [];
-            for (let i = 0; i < results.length; i++) {
-              choiceArray.push(results[i].title);
-            }
-            // // Removes duplicates
-            console.log(choiceArray)
-            // let cleanChoiceArray = [...new Set(choiceArray)];
-            // console.log(cleanChoiceArray)
-            // return cleanChoiceArray;
-            return choiceArray;
-          },
-          message: "What is the employee's new role?",
-        },
-      ])
-      .then((answer) => {
-        let chosenEmp;
-        let chosenRole;
-
-        for (let i = 0; i < results.length; i++) {
-          if (results[i].last_name === answer.employee) {
-            chosenEmp = results[i];
-          }
-        }
-
-        for (let i = 0; i < results.length; i++) {
-          if (results[i].title === answer.role) {
-            chosenRole = results[i];
-          }
-        }
-
-        connection.query(
-          "UPDATE employee SET ? WHERE ?",
-          [
-            {
-              role_id: chosenRole,
+  connection.query("SELECT * FROM employee", (err, empresults) => {
+    connection.query("SELECT * FROM role", (err, roleresults) => {
+      if (err) throw err;
+      inquirer
+        .prompt([
+          {
+            name: "employee",
+            type: "list",
+            choices: () => {
+              let choiceArray = [];
+              for (let i = 0; i < empresults.length; i++) {
+                choiceArray.push(empresults[i].last_name);
+              }
+              return choiceArray;
             },
-            {
-              last_name: chosenEmp,
+            message: "Which employee would you like to update?",
+          },
+          {
+            name: "role",
+            type: "list",
+            choices: () => {
+              let choiceArray = [];
+              for (let i = 0; i < roleresults.length; i++) {
+                choiceArray.push(roleresults[i].title);
+              }
+              return choiceArray;
             },
-          ],
-          (err) => {
-            if (err) throw err;
-            console.log(`Role has been updated!`);
-            start();
+            message: "What is the employee's new role?",
+          },
+        ])
+        .then((answer) => {
+          let chosenEmp;
+          let chosenRole;
+
+          for (let i = 0; i < empresults.length; i++) {
+            if (empresults[i].last_name === answer.employee) {
+              chosenEmp = empresults[i];
+            }
           }
-        );
-      });
+
+          for (let i = 0; i < roleresults.length; i++) {
+            if (roleresults[i].title === answer.role) {
+              chosenRole = roleresults[i];
+            }
+          }
+          console.log(chosenEmp);
+          console.log(chosenRole);
+          connection.query(
+            "UPDATE employee SET ? WHERE ?",
+            [
+              {
+                role_id: chosenRole.id,
+              },
+              {
+                id: chosenEmp.id,
+              },
+            ],
+            (err) => {
+              if (err) throw err;
+              console.log(`Role has been updated!`);
+              start();
+            }
+          );
+        });
+    });
   });
 }
-connection.connect((err) => {
-  if (err) throw err;
-  start();
-});
 
 // BONUS: 1 - Update emps
 // BONUS: 2 - View employees by mngr
@@ -447,28 +442,39 @@ connection.connect((err) => {
 // BONUS: 5 - View total utilized budget of a dept (combined salaries of all emp in that dept)
 
 // REMOVE EMPLOYEE
-// const removeEmployee = () => {
-//           connection.query(`SELECT employees.first_name, employees.id FROM employees`, (err, res) => {
-//               if (err) throw err;
-//           });
-//       inquirer.prompt([
-//           {
-//               name: 'removeID',
-//               type: 'input',
-//               message: "Which employee ID would you like to remove?",
-//           }
-//       ]).then(answer => {
-//           connection.query(`DELETE FROM employees WHERE id = ?`, [answer.removeID], (err, res) => {
-//               if (err) throw err;
-//               console.log("Successfully deleted");
-//               start();
-//           });
-//       });
-//   };
+const removeEmployee = () => {
+  connection.query(
+    `SELECT employee.first_name, employee.id FROM employee`,
+    (err, res) => {
+      if (err) throw err;
+      console.table(res);
+      inquirer
+        .prompt([
+          {
+            name: "removeID",
+            type: "input",
+            message: "Which employee ID would you like to remove?",
+          },
+        ])
+        .then((answer) => {
+          connection.query(
+            `DELETE FROM employee WHERE id = ?`,
+            answer.removeID,
+            (err, res) => {
+              if (err) throw err;
+              console.log("Successfully deleted");
+              start();
+            }
+          );
+        });
+    }
+  );
+};
 
-
-
-
+connection.connect((err) => {
+  if (err) throw err;
+  start();
+});
 
 // simple query
 // Query is a request for information from the db.
