@@ -63,7 +63,7 @@ console.log(chalk.red.bold(figlet.textSync("WELCOME TO THIS")));
 console.log(chalk.red.bold(figlet.textSync("COMMAND LINE APP")));
 console.log(
   `                               ` +
-  chalk.white.bold("THIS PROVIDES EMPLOYEE INFORMATION")
+    chalk.white.bold("THIS PROVIDES EMPLOYEE INFORMATION")
 );
 console.log(``);
 console.log(
@@ -170,32 +170,34 @@ function viewEmp() {
 // // 5. Choose to add a department: Prompted to enter name of dept & that department is added to db.
 // function addDept() { }
 function addDept() {
-  inquirer.prompt([
+  inquirer
+    .prompt([
       {
-          name: "department",
-          type: "input",
-          message: "What is the name of the new department?",
-          validate: (value) => {
-              if (value) {
-                  return true;
-              } else {
-                  console.log("Please enter the department name.");
-              }
+        name: "department",
+        type: "input",
+        message: "What is the name of the new department?",
+        validate: (value) => {
+          if (value) {
+            return true;
+          } else {
+            console.log("Please enter the department name.");
           }
+        },
       },
-  ]).then(answer => {
+    ])
+    .then((answer) => {
       connection.query(
-          "INSERT INTO department SET ?",
-          {
-              name: answer.department
-          },
-          (err) => {
-              if (err) throw err;
-              console.log(`New department ${answer.department} has been added!`);
-              start();
-          }
+        "INSERT INTO department SET ?",
+        {
+          name: answer.department,
+        },
+        (err) => {
+          if (err) throw err;
+          console.log(`New department ${answer.department} has been added!`);
+          start();
+        }
       );
-  });
+    });
 }
 
 // // 6. Choose to add a role:
@@ -203,70 +205,73 @@ function addDept() {
 function addRole() {
   const sql = "SELECT * FROM department";
   connection.query(sql, (err, results) => {
-      if (err) throw err;
+    if (err) throw err;
 
-      inquirer.prompt([
-          {
-              name: "title",
-              type: "input",
-              message: "What is the title for this new role?",
-              validate: (value) => {
-                  if (value) {
-                      return true;
-                  } else {
-                      console.log("Please enter the title.");
-                  }
-              }
+    inquirer
+      .prompt([
+        {
+          name: "title",
+          type: "input",
+          message: "What is the title for this new role?",
+          validate: (value) => {
+            if (value) {
+              return true;
+            } else {
+              console.log("Please enter the title.");
+            }
           },
-          {
-              name: "salary",
-              type: "number",
-              message: "What is their salary (just numbers)?",
-              validate: (value) => {
-                // The isNaN() function determines whether a value is NaN when converted to a number. 
-                // Because coercion inside the isNaN() function can be surprising, you may alternatively 
-                // want to use Number.isNaN().
-                  if (isNaN(value) === false) {
-                      return true;
-                  }
-                  console.log("Please enter a salary.");
-              }
+        },
+        {
+          name: "salary",
+          type: "number",
+          message: "What is their salary (just numbers)?",
+          validate: (value) => {
+            // The isNaN() function determines whether a value is NaN when converted to a number.
+            // Because coercion inside the isNaN() function can be surprising, you may alternatively
+            // want to use Number.isNaN().
+            if (isNaN(value) === false) {
+              return true;
+            }
+            console.log("Please enter a salary.");
           },
-          {
-              name: "department",
-              type: "input",
-              choices: () => {
-                  let choiceArray = [];
-                  // JavaScript Loop: https://www.w3schools.com/jsref/jsref_for.asp
-                  // Loops are used in JavaScript to perform repeated tasks based on a condition. 
-                  for (let i = 0; i < results.length; i++) {
-                      choiceArray.push(results[i].name);
-                  }
-                  return choiceArray;
-              },
-              message: "What department is this new role under?",
+        },
+        {
+          name: "department",
+          type: "list",
+          choices: () => {
+            let choiceArray = [];
+            // JavaScript Loop: https://www.w3schools.com/jsref/jsref_for.asp
+            // Loops are used in JavaScript to perform repeated tasks based on a condition.
+            for (let i = 0; i < results.length; i++) {
+              choiceArray.push(results[i].name);
+            }
+            return choiceArray;
+          },
+          message: "What department is this new role under?",
+        },
+      ])
+      .then((answer) => {
+        let chosenDept;
+        for (let i = 0; i < results.length; i++) {
+          if (results[i].name === answer.department) {
+            chosenDept = results[i];
           }
-      ]).then(answer => {
-          let chosenDept;
-          for (let i = 0; i < results.length; i++) {
-              if (results[i].name === answer.department) {
-                  chosenDept = results[i];
-              }
-          }
+        }
+        console.log(chosenDept);
 
-          connection.query(
-              "INSERT INTO role SET ?",
-              {
-                  title: answer.title,
-                  salary: answer.salary,
-                  department_id: chosenDept.id
-              },
-              (err) => {
-                  if (err) throw err;
-                  console.log(`New role ${answer.title} has been added!`);
-                  start();
-              }
-          )
+        connection.query(
+          "INSERT INTO role SET ?",
+          {
+            title: answer.title,
+            salary: answer.salary,
+            department_id: chosenDept.id,
+          },
+          (err) => {
+            if (err) throw err;
+            console.log(`New role ${answer.title} has been added!`);
+            start();
+          }
+        );
       });
   });
 }
@@ -274,68 +279,81 @@ function addRole() {
 // // 7. Choose to add an employee: Prompted to enter employee’s 1st name, last, role, & mngr, & employee is added to db.
 // // function to add an employee
 function addEmp() {
-  const sql = "SELECT * FROM employee, role";
+  const sql = "SELECT * FROM role";
   connection.query(sql, (err, results) => {
-      if (err) throw err;
+    if (err) throw err;
 
-      inquirer.prompt([
-          {
-              name: "firstName",
-              type: "input",
-              message: "What is their first name?",
-              validate: (value) => {
-                  if (value) {
-                      return true;
-                  } else {
-                      console.log("Please enter their first name.");
-                  }
-              }
+    inquirer
+      .prompt([
+        {
+          name: "firstName",
+          type: "input",
+          message: "What is their first name?",
+          validate: (value) => {
+            if (value) {
+              return true;
+            } else {
+              console.log("Please enter their first name.");
+            }
           },
-          {
-              name: "lastName",
-              type: "input",
-              message: "What is their last name?",
-              validate: (value) => {
-                  if (value) {
-                      return true;
-                  } else {
-                      console.log("Please enter their last name.");
-                  }
-              }
+        },
+        {
+          name: "lastName",
+          type: "input",
+          message: "What is their last name?",
+          validate: (value) => {
+            if (value) {
+              return true;
+            } else {
+              console.log("Please enter their last name.");
+            }
           },
+        },
+        {
+          name: "role",
+          type: "list",
+          choices: () => {
+            let choiceArray = [];
+            for (let i = 0; i < results.length; i++) {
+              choiceArray.push(results[i].title);
+            }
+            // Removes duplicates
+            // www.w3schools.com/sql/sql_ref_set.asp#:~:text=The%20SET%20command%20is%20used,be%20updated%20in%20a%20table.
+            // The SET command is used with UPDATE to specify which columns and values that should be updated in a table.
+            // The ? in SQL: These placeholders, indicated here with the ? symbol, tell the interfacing layer to automatically escape 
+            // the input passed to it before it is inserted into the query.
+            // Data layer protection: https://www.stackhawk.com/blog/node-js-sql-injection-guide-examples-and-prevention/
+            // How to delete duplicates in JS: https://www.geeksforgeeks.org/how-to-get-all-unique-values-remove-duplicates-in-a-javascript-array/
+            let cleanChoiceArray = [...new Set(choiceArray)];
+            return cleanChoiceArray;
+          },
+          message: "What is the role?",
+        },
+      ])
+      .then((answer) => {
+        let chosenRole;
+
+        for (let i = 0; i < results.length; i++) {
+          if (results[i].title === answer.role) {
+            chosenRole = results[i];
+          }
+        }
+
+        connection.query(
+          "INSERT INTO employee SET ?",
           {
-              name: "role",
-              type: "input",
-              choices: () => {
-                  let choiceArray = [];
-                  for (let i = 0; i < results.length; i++) {
-                      choiceArray.push(results[i].title);
-                  }
-              },
-              message: "What is the role?"
+            first_name: answer.firstName,
+            last_name: answer.lastName,
+            role_id: chosenRole.id,
+          },
+          (err) => {
+            if (err) throw err;
+            console.log(
+              `New employee ${answer.firstName} ${answer.lastName} has been added! as a ${answer.role}`
+            );
+            start();
           }
-      ]).then(answer => {
-          let chosenRole;
-
-          for (let i = 0; i < results.length; i++) {
-              if (results[i].title === answer.role) {
-                  chosenRole = results[i];
-              }
-          }
-
-          connection.query(
-              "INSERT INTO employee SET ?",
-              {
-                  first_name: answer.firstName,
-                  last_name: answer.lastName,
-                  role_id: chosenRole.id,
-              },
-              (err) => {
-                  if (err) throw err;
-                  console.log(`New employee ${answer.firstName} ${answer.lastName} has been added! as a ${answer.role}`);
-                  start();
-              }
-          )
+        );
       });
   });
 }
@@ -343,17 +361,81 @@ function addEmp() {
 // FINISH THE BELOW ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 8. Choose to update an employee role: Function to Update employee role & info is updated in db.
 function update() {
-  connection.query("SELECT * FROM employee, role", (err, results) => {
+  connection.query("SELECT * FROM employee", (err, results) => {
     if (err) throw err;
-  })
-}
 
+    inquirer
+      .prompt([
+        {
+          name: "employee",
+          type: "list",
+          choices: () => {
+            let choiceArray = [];
+            for (let i = 0; i < results.length; i++) {
+              choiceArray.push(results[i].last_name);
+            }
+            // Removes duplicates
+            let cleanChoiceArray = [...new Set(choiceArray)];
+            return cleanChoiceArray;
+          },
+          message: "Which employee would you like to update?",
+        },
+        {
+          name: "role",
+          type: "list",
+          choices: () => {
+            let choiceArray = [];
+            for (let i = 0; i < results.length; i++) {
+              choiceArray.push(results[i].title);
+            }
+            // Removes duplicates
+            let cleanChoiceArray = [...new Set(choiceArray)];
+            return cleanChoiceArray;
+          },
+          message: "What is the employee's new role?",
+        },
+      ])
+      .then((answer) => {
+        let chosenEmp;
+        let chosenRole;
+
+        for (let i = 0; i < results.length; i++) {
+          if (results[i].last_name === answer.employee) {
+            chosenEmp = results[i];
+          }
+        }
+
+        for (let i = 0; i < results.length; i++) {
+          if (results[i].title === answer.role) {
+            chosenRole = results[i];
+          }
+        }
+
+        connection.query(
+          "UPDATE employee SET ? WHERE ?",
+          [
+            {
+              role_id: chosenRole,
+            },
+            {
+              last_name: chosenEmp,
+            },
+          ],
+          (err) => {
+            if (err) throw err;
+            console.log(`Role has been updated!`);
+            start();
+          }
+        );
+      });
+  });
+}
 
 // BONUS: 1 - Update emps
 // BONUS: 2 - View employees by mngr
 // BONUS: 3 - View employees by dept
 // BONUS: 4 - Delete dept, dept, & emps
-// BONUS: 5 - View total utilized budget of a dept (compbined salaries of all emp in that dept)
+// BONUS: 5 - View total utilized budget of a dept (combined salaries of all emp in that dept)
 
 // REMOVE EMPLOYEE
 // const removeEmployee = () => {
@@ -375,18 +457,13 @@ function update() {
 //       });
 //   };
 
-
-
-
-
-connection.connect(err => {
-if(err) throw err;
-start();
+connection.connect((err) => {
+  if (err) throw err;
+  start();
 });
 
 // simple query
-// Query is a request for information.
-// It can be converted into a JSON string.
+// Query is a request for information from the db.
 // If it's a query string, you need to use require('querystring').
 // connection.query(
 //   'SELECT * roles, employees, FROM employees WHERE departments = "manager" AND `Tom Smith` ',
