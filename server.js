@@ -9,7 +9,7 @@ const mysql = require("mysql2");
 const inquirer = require("inquirer");
 
 // npm figlet help: https://www.npmjs.com/package/figlet
-// const figlet = require("figlet");
+const figlet = require("figlet");
 
 // Figlet through npm (I installed it via Terminal to use it.)
 // This project aims to fully implement the FIGfont spec in JavaScript.
@@ -73,6 +73,7 @@ console.log(
 );
 
 // Functions:
+
 // Start of the app:
 // 1. Add departments, roles, employees
 // The switch statement is used to perform different actions based on different conditions.
@@ -93,10 +94,9 @@ function start() {
         "Add an employee",
         "Update employee role",
         "Delete an employee",
-        "Delete a role",
-        "Delete a department",
         "Exit",
       ],
+
       // The then() method of a Promise object takes up to two arguments: callback functions for the fulfilled
       // and rejected cases of the Promise . It immediately returns an equivalent Promise
     })
@@ -140,6 +140,7 @@ function start() {
       }
     });
 }
+
 // 2. View departments, roles, employees: formatted table showing department names & department ids.
 function viewDepts() {
   connection.query("SELECT * FROM department", (err, data) => {
@@ -159,6 +160,7 @@ function viewRoles() {
     start();
   });
 }
+
 // // 4. View all employees, table showing emp data, emp ids, 1st names, last, job titles, depts, salaries, & mngs emplys rep to.
 // // function to Add a role; prompt role, salary and department
 function viewEmp() {
@@ -169,6 +171,7 @@ function viewEmp() {
     start();
   });
 }
+
 // // 5. Choose to add a department: Prompted to enter name of dept & that department is added to db.
 // function addDept() { }
 function addDept() {
@@ -201,6 +204,7 @@ function addDept() {
       );
     });
 }
+
 // // 6. Choose to add a role:
 // Prompted to enter name, salary, & dept for the role & that role is added to the db.
 function addRole() {

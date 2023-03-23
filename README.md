@@ -12,7 +12,7 @@ This is an application that helps a business owner to view and manage the depart
 3.  ```npm i``` and ```inquirer``` will install the listed dependencies packages.
 
 You can find the link to the repository at:
-[Repository link](https://github.com/123sites/Command-Line-Application.git)
+[This GitHub Link](https://github.com/123sites/Command-Line-Application.git)
 
 ## Usage
 
@@ -24,7 +24,7 @@ This can help to manage a company's employee database, using Node.js, Inquirer, 
 
 ## Screenshot 🎯
 
-[Click here to see the screenshot]() 
+![Screenshot](./images/Command-Line-App-Screenshot.png)
 
 ## Credits 👈
 
