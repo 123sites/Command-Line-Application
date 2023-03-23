@@ -20,7 +20,7 @@ This can help to manage a company's employee database, using Node.js, Inquirer, 
 
 ## Video 🎯
 
-[Click here to see the video]()
+[Click here to see the video](https://youtu.be/pTnL5LTORCw)
 
 ## Screenshot 🎯
 
