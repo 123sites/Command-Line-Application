@@ -9,7 +9,7 @@ const mysql = require("mysql2");
 const inquirer = require("inquirer");
 
 // npm figlet help: https://www.npmjs.com/package/figlet
-const figlet = require("figlet");
+// const figlet = require("figlet");
 
 // Figlet through npm (I installed it via Terminal to use it.)
 // This project aims to fully implement the FIGfont spec in JavaScript.
@@ -73,7 +73,6 @@ console.log(
 );
 
 // Functions:
-
 // Start of the app:
 // 1. Add departments, roles, employees
 // The switch statement is used to perform different actions based on different conditions.
@@ -94,9 +93,10 @@ function start() {
         "Add an employee",
         "Update employee role",
         "Delete an employee",
+        "Delete a role",
+        "Delete a department",
         "Exit",
       ],
-
       // The then() method of a Promise object takes up to two arguments: callback functions for the fulfilled
       // and rejected cases of the Promise . It immediately returns an equivalent Promise
     })
@@ -140,7 +140,6 @@ function start() {
       }
     });
 }
-
 // 2. View departments, roles, employees: formatted table showing department names & department ids.
 function viewDepts() {
   connection.query("SELECT * FROM department", (err, data) => {
@@ -160,7 +159,6 @@ function viewRoles() {
     start();
   });
 }
-
 // // 4. View all employees, table showing emp data, emp ids, 1st names, last, job titles, depts, salaries, & mngs emplys rep to.
 // // function to Add a role; prompt role, salary and department
 function viewEmp() {
@@ -171,7 +169,6 @@ function viewEmp() {
     start();
   });
 }
-
 // // 5. Choose to add a department: Prompted to enter name of dept & that department is added to db.
 // function addDept() { }
 function addDept() {
@@ -204,7 +201,6 @@ function addDept() {
       );
     });
 }
-
 // // 6. Choose to add a role:
 // Prompted to enter name, salary, & dept for the role & that role is added to the db.
 function addRole() {
@@ -280,14 +276,12 @@ function addRole() {
       });
   });
 }
-
 // // 7. Choose to add an employee: Prompted to enter employee’s 1st name, last, role, & mngr, & employee is added to db.
 // // function to add an employee
 function addEmp() {
   const sql = "SELECT * FROM role";
   connection.query(sql, (err, results) => {
     if (err) throw err;
-
     inquirer
       .prompt([
         {
@@ -322,15 +316,6 @@ function addEmp() {
             for (let i = 0; i < results.length; i++) {
               choiceArray.push(results[i].title);
             }
-            // Removes duplicates
-            // www.w3schools.com/sql/sql_ref_set.asp#:~:text=The%20SET%20command%20is%20used,be%20updated%20in%20a%20table.
-            // The SET command is used with UPDATE to specify which columns and values that should be updated in a table.
-            // The ? in SQL: These placeholders, indicated here with the ? symbol, tell the interfacing layer to automatically escape
-            // the input passed to it before it is inserted into the query.
-            // Data layer protection: https://www.stackhawk.com/blog/node-js-sql-injection-guide-examples-and-prevention/
-            // How to delete duplicates in JS: https://www.geeksforgeeks.org/how-to-get-all-unique-values-remove-duplicates-in-a-javascript-array/
-            // let cleanChoiceArray = [...new Set(choiceArray)];
-            // return cleanChoiceArray;
             return choiceArray;
           },
           message: "What is the role?",
@@ -363,8 +348,6 @@ function addEmp() {
       });
   });
 }
-
-// FINISH THE BELOW ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // 8. Choose to update an employee role: Function to Update employee role & info is updated in db.
 function update() {
   connection.query("SELECT * FROM employee", (err, empresults) => {
@@ -435,13 +418,7 @@ function update() {
   });
 }
 
-// BONUS: 1 - Update emps
-// BONUS: 2 - View employees by mngr
-// BONUS: 3 - View employees by dept
-// BONUS: 4 - Delete dept, dept, & emps
-// BONUS: 5 - View total utilized budget of a dept (combined salaries of all emp in that dept)
-
-// REMOVE EMPLOYEE
+// BONUS POINTS: Remove employee
 const removeEmployee = () => {
   connection.query(
     `SELECT employee.first_name, employee.id FROM employee`,
@@ -475,22 +452,3 @@ connection.connect((err) => {
   if (err) throw err;
   start();
 });
-
-// simple query
-// Query is a request for information from the db.
-// If it's a query string, you need to use require('querystring').
-// connection.query(
-//   'SELECT * roles, employees, FROM employees WHERE departments = "manager" AND `Tom Smith` ',
-//   function(err, results, fields) {
-//     console.log(results); // results contains rows returned by server
-//     console.log(fields); // fields contains extra meta data about results, if available
-//   }
-// );
-
-// connection.query(
-//   'SELECT * FROM `table` WHERE `name` = ? AND `age` > ?',
-//   ['Page', 45],
-//   function(err, results) {
-//     console.log(results);
-//   }
-// );
